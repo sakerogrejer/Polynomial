@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.function.Predicate;
 
-public class Polynomial
+public class Polynomial implements Cloneable
 {
 
     private ArrayList<Term> terms;
@@ -31,12 +31,13 @@ public class Polynomial
     }
 
     //Adding Polynomials
-    public static Polynomial add(Polynomial x, Polynomial y)
+    public Polynomial add(Polynomial y)
     {
 
         //Init vars
         Polynomial z = new Polynomial(new ArrayList<>());
-        Polynomial leftx = x;
+        Polynomial leftx = new Polynomial(this.terms);
+        Polynomial x = leftx;
         Polynomial lefty = y;
         ArrayList<Term> added = new ArrayList<>();
 
@@ -121,6 +122,21 @@ public class Polynomial
         this.terms = terms;
     }
 
+    public Polynomial()
+    {
+        this.terms = new ArrayList<>();
+    }
+
+    public Polynomial(Polynomial p)
+    {
+        this.terms = p.terms;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     public ArrayList<Term> getTerms() {
         return terms;
     }
@@ -129,4 +145,24 @@ public class Polynomial
         this.terms = terms;
     }
 
+
+    public void addTerm(Term t)
+    {
+        this.terms.add(t);
+    }
+
+    public Term getTerm(int i)
+    {
+        return this.terms.get(i);
+    }
+
+    public int getNumTerms()
+    {
+        return this.terms.size();
+    }
+
+    public void clear()
+    {
+        this.terms.removeAll(this.terms);
+    }
 }

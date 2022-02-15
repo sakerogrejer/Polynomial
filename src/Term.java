@@ -1,4 +1,4 @@
-public class Term
+public class Term implements Comparable
 {
 
     private int coef;
@@ -25,4 +25,18 @@ public class Term
         this.exp = exp;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        Term t = (Term)o;
+        if(this.exp > t.exp)
+        {
+            return 1;
+        }else if(this.exp == t.exp)
+        {
+            return 0;
+        }else
+        {
+            return -1;
+        }
+    }
 }
