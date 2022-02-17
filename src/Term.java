@@ -1,4 +1,4 @@
-public class Term implements Comparable
+public class Term implements Comparable, Cloneable
 {
 
     private int coef;
@@ -9,19 +9,40 @@ public class Term implements Comparable
         this.exp = exp;
     }
 
-    public int getCoef() {
+    public Term() {
+        this.coef = 0;
+        this.exp = 1;
+    }
+
+    public Term(String t) {
+        this.coef = Integer.parseInt(String.valueOf(t.charAt(0)));
+        this.exp = Integer.parseInt(String.valueOf(t.charAt(1)));
+    }
+
+    public Term(Term original) {
+        Term t = new Term(original.coef, original.exp);
+        this.exp = t.exp;
+        this.coef = t.coef;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public int getCoefficient() {
         return coef;
     }
 
-    public void setCoef(int coef) {
+    public void setCoefficient(int coef) {
         this.coef = coef;
     }
 
-    public int getExp() {
+    public int getExponent() {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExponent(int exp) {
         this.exp = exp;
     }
 
@@ -38,5 +59,11 @@ public class Term implements Comparable
         {
             return -1;
         }
+    }
+
+    public void setAll(int c, int e)
+    {
+        this.exp = e;
+        this.coef = c;
     }
 }

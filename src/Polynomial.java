@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.function.Predicate;
 
 public class Polynomial implements Cloneable
 {
@@ -68,9 +67,9 @@ public class Polynomial implements Cloneable
         {
             for(int n = k; n < x.terms.size(); n++)
             {
-                if (x.terms.get(k).getExp() == y.terms.get(n).getExp())
+                if (x.terms.get(k).getExponent() == y.terms.get(n).getExponent())
                 {
-                    z.terms.add(new Term(x.terms.get(k).getCoef() + y.terms.get(k).getCoef(), x.terms.get(k).getExp()));
+                    z.terms.add(new Term(x.terms.get(k).getCoefficient() + y.terms.get(k).getCoefficient(), x.terms.get(k).getExponent()));
                     leftx.terms.set(k, new Term(0, 0));
                     lefty.terms.set(k, new Term(0, 0));
                 }
@@ -95,10 +94,10 @@ public class Polynomial implements Cloneable
         {
             if(i != terms.size()-1)
             {
-                System.out.print(terms.get(i).getCoef() + "x^" + terms.get(i).getExp() + " + ");
+                System.out.print(terms.get(i).getCoefficient() + "x^" + terms.get(i).getExponent() + " + ");
             }else
             {
-                System.out.print(terms.get(i).getCoef() + "x^" + terms.get(i).getExp());
+                System.out.print(terms.get(i).getCoefficient() + "x^" + terms.get(i).getExponent());
             }
         }
     }
@@ -106,7 +105,7 @@ public class Polynomial implements Cloneable
     //Check for a null term
     private static boolean isZeroZero(Term t)
     {
-        if(t.getCoef() == 0)
+        if(t.getCoefficient() == 0)
         {
             return true;
         }else{ return false; }
@@ -115,7 +114,7 @@ public class Polynomial implements Cloneable
     //Sort polynomial based on exponent
     public void sortPoly()
     {
-       terms.sort(Comparator.comparing(Term::getExp).reversed());
+       terms.sort(Comparator.comparing(Term::getExponent).reversed());
     }
 
     public Polynomial(ArrayList<Term> terms) {
