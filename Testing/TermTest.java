@@ -21,7 +21,7 @@ public class TermTest {
             "+6x", "-9x", "+x^3", "-x^5", "+x^-2",
             "-x^-7", "+7x^4", "-2x^13", "+25x^-8", "-54x^-17"};
     private static final int[] COEFFICIENTS =   {0, 5, -3, 1, -1, 6, -9, 1, -1, 1, -1, 7, -2, 25, -54};
-    private static final int[] EXPONENTS =      {3, 0,  0, 1,  1, 1,  1, 3, 5, -2, -7, 4, 13, -8, -17};
+    private static final int[] EXPONENTS =      {3, 1,  1, 1,  1, 1,  1, 3, 5, -2, -7, 4, 13, -8, -17};
 
     private static int COMPARE_TO_VALUE = 3; //if this is changed, make sure to change array COMPARE_TO_VALUES
     private static final int[] COMPARE_TO_VALUES = {0, 1, 1, 1, 1, 1, 1, 0, -1, 1, 1, -1, -1, 1, 1};
@@ -135,6 +135,8 @@ public class TermTest {
             t = TERMS[i];
 
             test = new Term(t);
+
+            System.out.println(test);
 
             assertEquals("Expected and actual coefficients DON'T match", c, test.getCoefficient());
             assertEquals("Expected and actual exponents DON'T match", e, test.getExponent());

@@ -8,7 +8,8 @@ public class Main
         Polynomial p2 = new Polynomial(new ArrayList<>());
         p.polyInput();
         p2.polyInput();
-        Polynomial p3 = Polynomial.add(p, p2);
+        Polynomial p3 = p;
+        p3.add(p2);
         p3.printPoly();
     }
 }
