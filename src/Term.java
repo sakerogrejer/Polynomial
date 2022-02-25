@@ -127,10 +127,24 @@ public class Term implements Comparable, Cloneable
             }
             else
             {
-                String s = m.group(0);
-                s = s.replaceAll("\\D", "");
-                this.coef = Integer.parseInt(s);
-                this.exp = Integer.parseInt(m.group(2));
+                String g0 = m.group(0);
+                String g1 = m.group(1);
+                String g2 = m.group(2);
+                g0 = g0.replaceAll("[^0-9+\\-]", "");
+                g1 = g1.replaceAll("[^0-9+\\-]", "");
+                g2 = g2.replaceAll("[^0-9+\\-]", "");
+
+                if(g2.equals(""))
+                {
+                    this.coef = Integer.parseInt(g1);
+                    this.exp = 1;
+                }
+                else
+                {
+                    this.coef = Integer.parseInt(g1);
+                    this.exp = Integer.parseInt(g2);
+                }
+
             }
         }
         else

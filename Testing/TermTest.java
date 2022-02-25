@@ -136,8 +136,6 @@ public class TermTest {
 
             test = new Term(t);
 
-            System.out.println(test);
-
             assertEquals("Expected and actual coefficients DON'T match", c, test.getCoefficient());
             assertEquals("Expected and actual exponents DON'T match", e, test.getExponent());
         }
