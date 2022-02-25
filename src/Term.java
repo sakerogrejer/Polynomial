@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 public class Term implements Comparable, Cloneable
 {
 
-    private String pattern = "^(-?\\d*)([a-z]?)\\^?(-?\\d*)$";
+    //Group 1 is Coef, Group 2 is variable, Group 3 is Exp
+    private String pattern = "^([+\\-]?\\d*)([a-z]?)\\^?(-?\\d*)$";
     Pattern ptrn = Pattern.compile(pattern);
 
     @Override
@@ -31,7 +32,7 @@ public class Term implements Comparable, Cloneable
         {
             return "+" + coef;
         }
-        else if(exp == 0 && coef < 0)
+        else if(exp == 0)
         {
             return String.valueOf(coef);
         }else if(coef == 1 || coef == -1)
@@ -83,75 +84,94 @@ public class Term implements Comparable, Cloneable
 
     public Term(int coef, int exp) {
         this.coef = coef;
-        this.exp = exp;
+        this.exp  = exp;
     }
 
     public Term() {
         this.coef = 1;
-        this.exp = 1;
+        this.exp  = 1;
     }
 
-    public Term(String t) {
+    //Group 1 is Coef, Group 2 is variable, Group 3 is Exp
+    public Term(String t)
+    {
         Matcher m = ptrn.matcher(t);
-        if(t.equals("+x") || t.equals("x"))
+
+        //Check for +x and -x only
+        if(t.equals("+x") || t.equals("-x"))
         {
-            this.coef = 1;
-            this.exp = 1;
-        }
-        else if(t.equals("-x"))
-        {
-            this.coef = -1;
-            this.exp = 1;
-        }
-        else if(t.substring(0,2).equals("-x"))
-        {
-            this.coef = 1;
-            this.exp = Integer.parseInt(t.substring(3));
-        }
-        else if(m.find())
-        {
-            if(m.group(0).equals("") && m.group(2).equals(""))
+            if(t.equals("-x"))
             {
-                this.coef = 1;
-                this.exp = 1;
-            }
-            else if(m.group(2).equals(""))
-            {
-                this.coef = Integer.parseInt(m.group(0));
-                this.exp = 1;
-            }
-            else if(m.group(0).equals(""))
-            {
-                this.coef = 1;
-                this.exp = Integer.parseInt(m.group(2));
+                this.coef = -1;
             }
             else
             {
-                String g0 = m.group(0);
-                String g1 = m.group(1);
-                String g2 = m.group(2);
-                g0 = g0.replaceAll("[^0-9+\\-]", "");
-                g1 = g1.replaceAll("[^0-9+\\-]", "");
-                g2 = g2.replaceAll("[^0-9+\\-]", "");
+                this.coef = 1;
+            }
+            this.exp = 1;
+        }
+        //Else split the term
+        else if(m.find())
+        {
 
-                if(g2.equals(""))
+            //Get capture groups
+            String g0 = m.group(0);
+            String g1 = m.group(1);
+            String g2 = m.group(2);
+
+            //Defaulting empties to 1 and 1 still mathematically correct
+            if(g0.equals(""))
+            {
+                g0 = "1";
+            }
+            if(g2.equals(""))
+            {
+                g2 = "1";
+            }
+
+            //Checking if there is either no exponent or coef
+            if(g2.equals("x"))
+            {
+
+                //Check if the solo X is + or minus
+                if(g1.equals("+") || g1.equals("-"))
                 {
-                    this.coef = Integer.parseInt(g1);
-                    this.exp = 1;
+                    this.exp = Integer.parseInt(g0.substring(3));
+                    if(g1.equals("+"))
+                    {
+                        this.coef = 1;
+                    }
+                    else
+                    {
+                        this.coef = -1;
+                    }
+
                 }
+
+                //Otherwise check either expless or coefless term
                 else
                 {
+                    int expStart = g0.indexOf("^");
+                    this.exp = 1;
+                    if(expStart >= 0)
+                    {
+                        this.exp = Integer.parseInt(g0.substring(expStart+1));
+                    }
+                    else
+                    {
+                        this.exp = 1;
+                    }
                     this.coef = Integer.parseInt(g1);
-                    this.exp = Integer.parseInt(g2);
                 }
 
             }
-        }
-        else
-        {
-            t = t.replaceAll("\\D", "");
-            this.coef = Integer.parseInt(t);
-            this.exp = 1;
+            else
+            {
+                //Parse coef and exp
+                this.coef = Integer.parseInt(g0);
+                this.exp  = Integer.parseInt(g2);
+            }
+
         }
 
     }
