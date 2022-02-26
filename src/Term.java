@@ -22,61 +22,57 @@ public class Term implements Comparable, Cloneable
         return Objects.hash(coef, exp);
     }
 
+    //Pain
     @Override
-    public String toString() {
+    public String toString()
+    {
+        StringBuilder s = new StringBuilder();
+
+        System.out.println("Coef: " + coef + " Exp: " + exp);
+
+        if(coef == -1 && exp == 1)
+        {
+            return "-x";
+        }
+
         if(coef == 0)
         {
             return "";
         }
-        else if(exp == 0 && coef > 0)
-        {
-            return "+" + coef;
-        }
-        else if(exp == 0)
-        {
-            return String.valueOf(coef);
-        }else if(coef == 1 || coef == -1)
-        {
-            if(exp == 1) {
-                if(coef == 1)
-                {
-                    return "+x";
-                }else
-                {
-                    return "-x";
-                }
 
-            } else
-            {
-                if(coef > 0) {
-                    return "+x^" + exp;
-                } else
-                {
-                    return "-x^" + exp;
-                }
-            }
-        }
-        else if(exp == 1)
+        if(coef >= 0)
         {
-            if (coef > 0)
-            {
-                return "+" + coef + "x";
-            }
-                else
-            {
-                {
-                    return coef + "x";
-                }
-            }
+            s.append("+");
         }
+        else if(coef == -1)
         {
-            if(coef > 0) {
-                return "+" + coef + "x^" + exp;
-            }else
-            {
-                return coef + "x^" + exp;
-            }
+            s.append("-");
         }
+
+        if(Math.abs(coef) == 1)
+        {
+            s.append("x");
+        }
+        else
+        {
+            s.append(coef);
+        }
+
+        if(exp < 0 || exp > 1)
+        {
+                s.append("x^");
+                s.append(exp);
+        }
+        else if(exp == 1 && !s.toString().equals("+x"))
+        {
+            s.append("x");
+        }
+
+        String str = s.toString();
+        str = str.replaceFirst("xx", "x");
+
+        return str;
+
     }
 
     private int coef;
@@ -126,7 +122,7 @@ public class Term implements Comparable, Cloneable
             }
             if(g2.equals(""))
             {
-                g2 = "1";
+                g2 = "0";
             }
 
             //Checking if there is either no exponent or coef
