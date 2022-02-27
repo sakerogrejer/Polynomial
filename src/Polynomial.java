@@ -6,6 +6,35 @@ public class Polynomial implements Cloneable
     private ArrayList<Term> terms;
     Scanner scanner = new Scanner(System.in);
 
+    @Override
+    public String toString()
+    {
+
+        sortPoly();
+
+        if(terms.size() == 0)
+        {
+            return "0";
+        }
+
+        StringBuilder s = new StringBuilder();
+
+        for(int i = 0; i < terms.size(); i++)
+        {
+            if(i == 0 && terms.get(i).getCoefficient() >= 0)
+            {
+                s.append(terms.get(i) + " ").replace(0,1,"");
+            }
+            else
+            {
+                s.append(terms.get(i) + " ");
+            }
+
+        }
+
+        return s.toString();
+    }
+
     //Create Polynomials
     public void polyInput()
     {
@@ -119,21 +148,30 @@ public class Polynomial implements Cloneable
 
     public Polynomial(ArrayList<Term> terms) {
         this.terms = terms;
+        sortPoly();
     }
 
     public Polynomial()
     {
         this.terms = new ArrayList<>();
+        sortPoly();
     }
 
     public Polynomial(Polynomial p)
     {
-        this.terms = p.terms;
+        this(p.terms);
+        sortPoly();
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new Polynomial(this.terms);
+        }
     }
 
     public ArrayList<Term> getTerms() {
