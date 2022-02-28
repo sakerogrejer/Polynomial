@@ -172,6 +172,11 @@ public class Term implements Comparable, Cloneable
 
     }
 
+    public Term addTerm(Term t)
+    {
+        return new Term(t.getCoefficient()+this.coef, t.getExponent());
+    }
+
     public Term(Term original) {
         Term t = new Term(original.coef, original.exp);
         this.exp = t.exp;

@@ -3,9 +3,30 @@ import java.util.*;
 public class Polynomial implements Cloneable
 {
 
-    private ArrayList<Term> terms;
+    protected ArrayList<Term> terms;
     Scanner scanner = new Scanner(System.in);
 
+    //Constructors
+    public Polynomial(ArrayList<Term> terms) {
+        this.terms = terms;
+        sortPoly();
+    }
+
+    public Polynomial()
+    {
+        this.terms = new ArrayList<>();
+        sortPoly();
+    }
+
+    public Polynomial(Polynomial original) {
+        this.terms = new ArrayList<>();
+        for(Term t : original.terms)
+        {
+            this.terms.add(new Term(t.getCoefficient(), t.getExponent()));
+        }
+    }
+
+    //Functions
     @Override
     public String toString()
     {
@@ -59,61 +80,33 @@ public class Polynomial implements Cloneable
     }
 
     //Adding Polynomials
-    public Polynomial add(Polynomial y)
+    public Polynomial add(Polynomial y) {
+        this.sortPoly();
+        y.sortPoly();
+        Polynomial p = new Polynomial();
+        Polynomial[] minmax = maxPoly(this, y);
+
+        int min = Math.min(minmax[0].terms.size(), minmax[1].terms.size())-1;
+        int max = Math.max(minmax[0].terms.size(), minmax[1].terms.size())-1;
+
+
+
+        return p;
+
+    }
+
+    //Return Bigger Termed Polynomial
+    public Polynomial[] maxPoly(Polynomial x, Polynomial y)
     {
-
-        //Init vars
-        Polynomial z = new Polynomial(new ArrayList<>());
-        Polynomial leftx = new Polynomial(this.terms);
-        Polynomial x = leftx;
-        Polynomial lefty = y;
-        ArrayList<Term> added = new ArrayList<>();
-
-        //Finding max polynomial
-        char max = 'a';
-        if(x.terms.size()>y.terms.size())
+        x.sortPoly(); y.sortPoly();
+        if(x.terms.get(0).getExponent() > y.terms.get(0).getExponent())
         {
-            max = 'x';
-        }else {max = 'y';}
-
-        if(max == 'x')
-        {
-            for(int i = y.terms.size(); i < x.terms.size(); i++)
-            {
-                y.terms.add(new Term(0, 0));
-            }
+            return new Polynomial[]{x, y};
         }
         else
         {
-            for(int i = x.terms.size(); i < y.terms.size(); i++)
-            {
-                y.terms.add(new Term(0, 0));
-            }
+            return new Polynomial[]{y, x};
         }
-
-        //Add terms together and set copies to 0x^0 to add not like terms to final poly
-        for(int k = 0; k < x.terms.size(); k++)
-        {
-            for(int n = k; n < x.terms.size(); n++)
-            {
-                if (x.terms.get(k).getExponent() == y.terms.get(n).getExponent())
-                {
-                    z.terms.add(new Term(x.terms.get(k).getCoefficient() + y.terms.get(k).getCoefficient(), x.terms.get(k).getExponent()));
-                    leftx.terms.set(k, new Term(0, 0));
-                    lefty.terms.set(k, new Term(0, 0));
-                }
-            }
-        }
-
-        //Combine terms not added
-        leftx.terms.addAll(lefty.terms);
-        z.terms.addAll(leftx.terms);
-
-        //Remove terms that are 0x^0
-        z.terms.removeIf(Polynomial::isZeroZero);
-
-        return z;
-
     }
 
     //Print Poly
@@ -146,34 +139,6 @@ public class Polynomial implements Cloneable
        terms.sort(Comparator.comparing(Term::getExponent).reversed());
     }
 
-    public Polynomial(ArrayList<Term> terms) {
-        this.terms = terms;
-        sortPoly();
-    }
-
-    public Polynomial()
-    {
-        this.terms = new ArrayList<>();
-        sortPoly();
-    }
-
-    public Polynomial(Polynomial p)
-    {
-        this(p.terms);
-        sortPoly();
-    }
-
-    @Override
-    public Object clone()
-    {
-        try
-        {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            return new Polynomial(this.terms);
-        }
-    }
-
     public ArrayList<Term> getTerms() {
         return terms;
     }
@@ -181,7 +146,6 @@ public class Polynomial implements Cloneable
     public void setTerms(ArrayList<Term> terms) {
         this.terms = terms;
     }
-
 
     public void addTerm(Term t)
     {
