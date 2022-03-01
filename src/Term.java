@@ -28,8 +28,6 @@ public class Term implements Comparable, Cloneable
     {
         StringBuilder s = new StringBuilder();
 
-        System.out.println("Coef: " + coef + " Exp: " + exp);
-
         if(coef == -1 && exp == 1)
         {
             return "-x";

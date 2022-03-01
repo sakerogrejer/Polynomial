@@ -80,19 +80,40 @@ public class Polynomial implements Cloneable
     }
 
     //Adding Polynomials
-    public Polynomial add(Polynomial y) {
+    public Polynomial add(Polynomial x) {
+
+        x.sortPoly();
         this.sortPoly();
-        y.sortPoly();
-        Polynomial p = new Polynomial();
-        Polynomial[] minmax = maxPoly(this, y);
 
-        int min = Math.min(minmax[0].terms.size(), minmax[1].terms.size())-1;
-        int max = Math.max(minmax[0].terms.size(), minmax[1].terms.size())-1;
+        Polynomial p = new Polynomial(new ArrayList<Term>());
+        Polynomial y = this;
+
+        Polynomial temp1 = new Polynomial(x);
+        Polynomial temp2 = new Polynomial(y);
 
 
+        for(Term t1 : x.terms)
+        {
+            for(Term t2 : y.terms)
+            {
+                if(t1.getExponent() == t2.getExponent())
+                {
+                    p.terms.add(new Term(t1.getCoefficient() + t2.getCoefficient(), t1.getExponent()));
+                    temp1.terms.remove(t1);
+                    temp2.terms.remove(t2);
+                }
+            }
+        }
 
+        temp1.terms.addAll(temp2.terms);
+
+        p.terms.addAll(temp1.terms);
+        p.sortPoly();
+
+        p.terms.removeIf(tt -> tt.getCoefficient()==0);
+
+        this.terms = p.terms;
         return p;
-
     }
 
     //Return Bigger Termed Polynomial

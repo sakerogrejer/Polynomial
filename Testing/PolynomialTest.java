@@ -264,7 +264,6 @@ public class PolynomialTest {
         for(Term t : UNIQUE_TERMS2) {
             test2.addTerm(t);
         }
-
         test1.add(test2);
 
         for(int i = 0; i < test1.getNumTerms(); i++) {
