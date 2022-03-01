@@ -91,7 +91,7 @@ public class Polynomial implements Cloneable
         Polynomial temp1 = new Polynomial(x);
         Polynomial temp2 = new Polynomial(y);
 
-
+        //Adding Two Poly
         for(Term t1 : x.terms)
         {
             for(Term t2 : y.terms)
@@ -170,11 +170,28 @@ public class Polynomial implements Cloneable
 
     public void addTerm(Term t)
     {
+        this.sortPoly();
+
+        int i = 0;
+        for(Term tt : this.terms)
+        {
+            if(tt.getExponent() == t.getExponent())
+            {
+                this.terms.set(i, tt.addTerm(t));
+                this.sortPoly();
+                return;
+            }
+            i++;
+        }
+
         this.terms.add(t);
+        this.sortPoly();
+
     }
 
     public Term getTerm(int i)
     {
+        this.sortPoly();
         return this.terms.get(i);
     }
 
