@@ -3,23 +3,23 @@ import java.util.*;
 public class Polynomial implements Cloneable
 {
 
-    protected ArrayList<Term> terms;
+    protected LinkedList<Term> terms;
     Scanner scanner = new Scanner(System.in);
 
     //Constructors
-    public Polynomial(ArrayList<Term> terms) {
+    public Polynomial(LinkedList<Term> terms) {
         this.terms = terms;
         sortPoly();
     }
 
     public Polynomial()
     {
-        this.terms = new ArrayList<>();
+        this.terms = new LinkedList<Term>();
         sortPoly();
     }
 
     public Polynomial(Polynomial original) {
-        this.terms = new ArrayList<>();
+        this.terms = new LinkedList<Term>();
         for(Term t : original.terms)
         {
             this.terms.add(new Term(t.getCoefficient(), t.getExponent()));
@@ -85,7 +85,7 @@ public class Polynomial implements Cloneable
         x.sortPoly();
         this.sortPoly();
 
-        Polynomial p = new Polynomial(new ArrayList<Term>());
+        Polynomial p = new Polynomial(new LinkedList<Term>());
         Polynomial y = this;
 
         Polynomial temp1 = new Polynomial(x);
@@ -148,10 +148,7 @@ public class Polynomial implements Cloneable
     //Check for a null term
     private static boolean isZeroZero(Term t)
     {
-        if(t.getCoefficient() == 0)
-        {
-            return true;
-        }else{ return false; }
+        return t.getCoefficient() == 0;
     }
 
     //Sort polynomial based on exponent
@@ -160,11 +157,11 @@ public class Polynomial implements Cloneable
        terms.sort(Comparator.comparing(Term::getExponent).reversed());
     }
 
-    public ArrayList<Term> getTerms() {
+    public LinkedList<Term> getTerms() {
         return terms;
     }
 
-    public void setTerms(ArrayList<Term> terms) {
+    public void setTerms(LinkedList<Term> terms) {
         this.terms = terms;
     }
 

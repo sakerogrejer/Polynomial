@@ -6,7 +6,7 @@ public class Term implements Comparable, Cloneable
 {
 
     //Group 1 is Coef, Group 2 is variable, Group 3 is Exp
-    private String pattern = "^([+\\-]?\\d*)([a-z]?)\\^?(-?\\d*)$";
+    private final String pattern = "^([+\\-]?\\d*)([a-z]?)\\^?(-?\\d*)$";
     Pattern ptrn = Pattern.compile(pattern);
 
     @Override
